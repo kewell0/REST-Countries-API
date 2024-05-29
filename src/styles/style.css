@@ -33,7 +33,7 @@ img {
 
 .container {
   display: flex;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   align-items: center;
   justify-content: space-between;
   margin: auto;
@@ -126,6 +126,18 @@ body.dark .btn-toggle .far {
   margin: 10px 0;
 }
 
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  gap: 60px;
+  max-width: 1440px;
+  /* padding: 30px; */
+  /* position: relative; */
+}
+
 /* Card styling */
 .card {
   border-radius: 4px;
@@ -133,7 +145,7 @@ body.dark .btn-toggle .far {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.12);
   cursor: pointer;
   overflow: hidden;
-  margin: 40px;
+  /* margin: 40px; */
   max-width: 100%;
   width: 300px;
 }
