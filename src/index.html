@@ -14,7 +14,7 @@
 
   <body>
     <header>
-      <div class="container">
+      <div class="header-container">
         <h1>Where in the world?</h1>
         <button class="btn-toggle" id="toggle">
           <i class="far fa-moon"></i>
@@ -31,7 +31,7 @@
             id="search"
             class="search"
             type="text"
-            placeholder="Search for a country"
+            placeholder="Search for a country..."
           />
 
           <div class="dropdown" id="filter">
@@ -50,17 +50,20 @@
       </section>
 
       <div class="modal" id="modal">
-        <div class="container">
+        <div class="modal-container">
           <button class="btn-close" id="close">
-            <i class="fas fa-times"></i>
+            <i class="fas fa-arrow-left" style="color: gray"></i>
+            <p>back</p>
           </button>
-          <img src="" alt="" />
-          <div class="modal-body"></div>
+          <div class="modal-details">
+            <img src="" alt="" />
+            <div class="modal-body"></div>
+          </div>
         </div>
       </div>
 
       <section>
-        <div class="container countries" id="countries">
+        <div class="card-container countries" id="countries">
           <div class="loader" id="card-loader"></div>
         </div>
       </section>
