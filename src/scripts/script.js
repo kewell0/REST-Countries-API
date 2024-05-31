@@ -106,7 +106,7 @@ const showCountryDetails = async (country) => {
   const bordersContainer = modal.querySelector("#borders");
 
   if (country.borders && country.borders.length > 0) {
-    bordersContainer.innerHTML = "<p>loading...!</p>";
+    bordersContainer.innerHTML = `<p style="margin-left: 6px">loading...!</p>`;
     const borderCountries = await Promise.all(
       country.borders.map((border) => getCountryByCode(border))
     );
