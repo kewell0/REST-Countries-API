@@ -327,17 +327,20 @@ body.dark .border-button:hover {
     gap: 3rem;
   }
 }
-@media screen and (max-width: 1051px) {
+@media screen and (max-width: 1111px) {
   .modal-container {
-    margin-top: 180px;
+    margin-top: 230px;
   }
   .modal-details {
     gap: 2rem;
   }
+  .modal-details {
+    gap: 0px;
+  }
 }
 @media screen and (max-width: 976px) {
   .modal-container {
-    margin-top: 390px;
+    margin-top: 430px;
   }
   .modal-details {
     flex-direction: column;
@@ -372,7 +375,7 @@ body.dark .border-button:hover {
 
   .modal-container {
     padding: 20px;
-    margin-top: 220px;
+    margin-top: 240px;
     width: 100%;
     min-height: 100%;
   }
