@@ -106,7 +106,7 @@ const showCountryDetails = async (country) => {
   const bordersContainer = modal.querySelector("#borders");
 
   if (country.borders && country.borders.length > 0) {
-    bordersContainer.innerHTML = "<p>Loading border countries...</p>";
+    bordersContainer.innerHTML = "<p>Loading...!!</p>";
     const borderCountries = await Promise.all(
       country.borders.map((border) => getCountryByCode(border))
     );
@@ -121,7 +121,7 @@ const showCountryDetails = async (country) => {
       bordersContainer.appendChild(button);
     });
   } else {
-    bordersContainer.innerHTML = "<p>No border country</p>";
+    bordersContainer.innerHTML = `<p >None</p>`;
   }
 };
 
