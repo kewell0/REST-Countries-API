@@ -26,7 +26,6 @@ header {
   background-color: var(--background-el);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.12);
   position: sticky;
-  position: sticky;
   top: 0;
   overflow: hidden;
   z-index: 1000;
@@ -197,66 +196,69 @@ body.dark .btn-toggle .far {
   bottom: 0;
   z-index: 100;
   min-height: 100vh;
+  overflow-y: scroll;
 }
 
 .modal-container {
-  /* margin-top: 200px; */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 80%;
 }
+
 .modal-details {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  gap: 10rem;
 }
 
 .modal img {
   margin-top: 20px;
-  /* max-width: 450px; */
-
-  width: 45%;
+  max-width: 450px;
+  height: 350px;
 }
 
 .modal-body {
-  padding: 30px;
 }
 
 .details-top {
   margin-top: 40px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 60px;
 }
 
-.borders-container {
+.border-countries {
   margin-top: 20px;
   display: flex;
   align-items: center;
 }
 
+/* Border button styling */
 .border-button {
   min-width: 70px;
   margin: 5px;
   padding: 8px;
   border-radius: 2px;
+  color: inherit;
   border: none;
   background-color: var(--background-el);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.12);
-  /* color: white; */
   cursor: pointer;
 }
 
 .border-button:hover {
-  background-color: #d5d8db;
+  background-color: hsl(0, 0%, 92%);
+}
+
+body.dark .border-button:hover {
+  background-color: hsl(209, 23%, 30%);
 }
 
 .btn-close {
   align-self: flex-start;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -266,12 +268,12 @@ body.dark .btn-toggle .far {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.12);
   cursor: pointer;
   font-size: 16px;
-
-  padding: 10px;
+  padding: 20px;
   height: 35px;
-  width: 80px;
+  width: 100px;
   border-radius: 2px;
 }
+
 .btn-close:hover {
   background-color: #d5d8db;
 }
@@ -285,7 +287,6 @@ body.dark .btn-toggle .far {
   justify-items: center;
   vertical-align: middle;
   margin: 0 auto;
-
   text-align: center;
 }
 
@@ -299,8 +300,8 @@ body.dark .btn-toggle .far {
 }
 
 .loader {
-  border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #3498db; /* Blue */
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid green;
   border-radius: 50%;
   width: 120px;
   height: 120px;
@@ -331,7 +332,6 @@ body.dark .btn-toggle .far {
     flex-direction: column;
     align-items: flex-start;
     gap: 40px;
-
     position: relative;
   }
   .container .search {
@@ -339,27 +339,36 @@ body.dark .btn-toggle .far {
   }
 
   .modal-container {
-    padding: 10px;
-    margin-top: 60px;
+    padding: 20px;
+    margin-top: 180px;
     width: 100%;
+    min-height: 100%;
   }
 
   .modal img {
-    width: 100%;
+    margin-top: 50px;
+    width: 90%;
+    height: 200px;
   }
 
   .modal-details {
     flex-direction: column;
-    /* align-items: self-start; */
+    gap: 0px;
     align-items: flex-start;
-    background-color: blue;
   }
 
   .details-top {
+    margin-top: 0;
     flex-direction: column;
-    background-color: red;
-    margin-top: -20px;
-    margin-left: -50px;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .border-countries {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 

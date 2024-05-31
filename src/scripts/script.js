@@ -19,14 +19,10 @@ getCountries();
 
 // fetch all countries
 async function getCountries() {
+  loader.style.display = "block";
   const res = await fetch("https://restcountries.com/v3.1/all");
   const countries = await res.json();
-
-  const names = countries[5].name.nativeName;
-  const native = Object.values(names);
-  console.log(native[0].official, "!!!!!!");
-  console.log(countries[5], "countries");
-
+  loader.style.display = "none";
   displayCountries(countries);
 }
 
@@ -46,25 +42,16 @@ const displayCountries = (countries) => {
     countryEl.classList.add("card");
 
     countryEl.innerHTML = `
-            <div>
-                <img src="${country.flags.svg}" alt="${country.flags.alt}" />
-            </div>
-            <div class="card-body">
-                <h3 class="country-name">${country.name.official}</h3>
-                <p>
-                    <strong>Population:</strong>
-                    ${country.population.toLocaleString()}
-                </p>
-                <p class="country-region">
-                    <strong>Region:</strong>
-                    ${country.region}
-                </p>
-                <p>
-                    <strong>Capital:</strong>
-                    ${country.capital}
-                </p>
-            </div>
-        `;
+      <div>
+        <img src="${country.flags.svg}" alt="${country.flags.alt}" />
+      </div>
+      <div class="card-body">
+        <h3 class="country-name">${country.name.official}</h3>
+        <p><strong>Population:</strong> ${country.population.toLocaleString()}</p>
+        <p class="country-region"><strong>Region:</strong> ${country.region}</p>
+        <p><strong>Capital:</strong> ${country.capital}</p>
+      </div>
+    `;
 
     countryEl.addEventListener("click", () => {
       modal.style.display = "flex";
@@ -76,82 +63,55 @@ const displayCountries = (countries) => {
 };
 
 // country detail
-const showCountryDetails = (country) => {
+const showCountryDetails = async (country) => {
   const modalBody = modal.querySelector(".modal-body");
   const modalImg = modal.querySelector("img");
 
   modalImg.src = country.flags.svg;
 
-  // Convert currencies and languages to arrays
+  const nativeName = country.name.nativeName
+    ? Object.values(country.name.nativeName)[0].official
+    : "N/A";
   const currencies = country.currencies
-    ? Object.entries(country.currencies).map(
-        ([key, { name, symbol }]) => `${name} (${symbol})`
-      )
-    : ["N/A"];
+    ? Object.values(country.currencies)
+        .map(({ name, symbol }) => `${name} (${symbol})`)
+        .join(", ")
+    : "N/A";
   const languages = country.languages
-    ? Object.values(country.languages)
-    : ["N/A"];
-
-  // Convert Native name
-  const nativeName = Object.values(country.name.nativeName);
+    ? Object.values(country.languages).join(", ")
+    : "N/A";
 
   modalBody.innerHTML = `
    <div class="details-top">
-      <div><h2>${country.name.official}</h2>
-      <p>
-          <strong>Native Name:</strong>
-          ${nativeName[0].official}
-      </p>
-   
-      <p>
-      <strong>Population:</strong>
-      ${country.population.toLocaleString()}
-      </p>
-   
-      <p>
-      <strong>Region:</strong>
-      ${country.region}
-      </p>
-   
-      <p>
-      <strong>Sub Region:</strong>
-      ${country.subregion}
-      </p>
-      <p>
-      <strong>Capital:</strong>
-      ${country.capital}
-      </p></div>
-    <div><p>
-    <strong>Top Level Domain:</strong>
-    ${country.tld}
-    </p>
-    <p>
-    <strong>Currency:</strong>
-    ${
-      country.currencies
-        ? Object.values(country.currencies)
-            .map((currency) => `${currency.name} (${currency.symbol})`)
-            .join(", ")
-        : "N/A"
-    }
-    </p>
-    <p>
-    <strong>Languages:</strong>
-    ${country.languages ? Object.values(country.languages).join(", ") : "N/A"}
-    </p>
-    </div>
+      <div>
+        <h2>${country.name.official}</h2>
+        <p><strong>Native Name:</strong> ${nativeName}</p>
+        <p><strong>Population:</strong> ${country.population.toLocaleString()}</p>
+        <p><strong>Region:</strong> ${country.region}</p>
+        <p><strong>Sub Region:</strong> ${country.subregion}</p>
+        <p><strong>Capital:</strong> ${country.capital}</p>
+      </div>
+      <div>
+        <p><strong>Top Level Domain:</strong> ${country.tld}</p>
+        <p><strong>Currency:</strong> ${currencies}</p>
+        <p><strong>Languages:</strong> ${languages}</p>
+      </div>
    </div>
-   <div class="borders-container">
-    <strong>Border Countries:</strong>
-    <div id="borders"></div>
+   <div class="border-countries">
+      <strong style="white-space: nowrap">Border Countries:</strong>
+      <div id="borders"></div>
    </div>
-    `;
+  `;
 
   const bordersContainer = modal.querySelector("#borders");
 
   if (country.borders && country.borders.length > 0) {
-    country.borders.forEach(async (border) => {
-      const borderCountry = await getCountryByCode(border);
+    bordersContainer.innerHTML = "<p>Loading border countries...</p>";
+    const borderCountries = await Promise.all(
+      country.borders.map((border) => getCountryByCode(border))
+    );
+    bordersContainer.innerHTML = "";
+    borderCountries.forEach((borderCountry) => {
       const button = document.createElement("button");
       button.textContent = borderCountry.name.common;
       button.classList.add("border-button");
@@ -161,7 +121,7 @@ const showCountryDetails = (country) => {
       bordersContainer.appendChild(button);
     });
   } else {
-    bordersContainer.innerHTML = "<p>N/A</p>";
+    bordersContainer.innerHTML = "<p>No border country</p>";
   }
 };
 
@@ -175,31 +135,40 @@ filterBtn.addEventListener("click", () => {
   filterBtn.classList.toggle("open");
 });
 
+// search functionality
 searchEl.addEventListener("input", (e) => {
   const { value } = e.target;
-  const nameOfConttry = document.querySelectorAll(".country-name");
+  const countryNames = document.querySelectorAll(".country-name");
+  let found = false;
 
-  nameOfConttry.forEach((name) => {
+  countryNames.forEach((name) => {
     if (name.innerText.toLowerCase().includes(value.toLowerCase())) {
       name.parentElement.parentElement.style.display = "block";
+      found = true;
     } else {
       name.parentElement.parentElement.style.display = "none";
-      noResult.style.display = "flex";
     }
   });
+
+  noResult.style.display = found ? "none" : "flex";
 });
 
-regionFilters.forEach((nation) => {
-  nation.addEventListener("click", () => {
-    const result = nation.innerText,
-      countryRegion = document.querySelectorAll(".country-region");
+// region filter functionality
+regionFilters.forEach((regionFilter) => {
+  regionFilter.addEventListener("click", () => {
+    const region = regionFilter.innerText;
+    const countryRegions = document.querySelectorAll(".country-region");
+    let found = false;
 
-    countryRegion.forEach((region) => {
-      if (region.innerHTML.includes(result) || result === "All") {
-        region.parentElement.parentElement.style.display = "block";
+    countryRegions.forEach((regionEl) => {
+      if (regionEl.innerHTML.includes(region) || region === "All") {
+        regionEl.parentElement.parentElement.style.display = "block";
+        found = true;
       } else {
-        region.parentElement.parentElement.style.display = "none";
+        regionEl.parentElement.parentElement.style.display = "none";
       }
     });
+
+    noResult.style.display = found ? "none" : "flex";
   });
 });
